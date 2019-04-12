@@ -1,0 +1,185 @@
+======================================================================
+  React Core
+======================================================================
+
+
+require		sintaxis ES5 para acceder a un modulo/codigo externo
+import		sintaxis ES6 para acceder a un modulo/codigo externo
+
+
+module.exports	sintaxix ES5 para hacer accesible funciones, objectos, 
+		clases, expresiones o modulos entre archivos js
+
+export		sintaxix ES6 para hacer accesible funciones, objectos, 
+		clases, expresiones o modulos entre archivos js
+
+exporta default	si un codigo es exportado con default, entoces se puede
+		importar ese codigo si la necesidad de las llaves que 
+		encierran el codigo a utilizar		
+
+
+ReactDOM 	solo actualiza el texto del nodo cuyo contenido cambio
+
+
+componentes
+funcionales	se llaman asi a los componentes definidos como una funcion
+		function Welcome(props){ return <h1>Hello</h1>; }
+
+components
+por clase	se llaman asi a los components definidos basados en clases
+		este metodo de definicion agrega caracteristicas al componente
+		class Welcome extends React.Component { render(){ return <h1>Hello</h1>; } }
+
+props		al crear un elemento en react, el motor de react crea
+		automaticamente un objeto llamado props, este objeto 
+		contiene los atributos y valores definidos en el componente
+		es necesario aclara que las props son de solo lectura
+
+		ejmp:  <Welcome name="sara"> 
+
+		//objeto props simple  
+		props = {name: "sara"}
+
+		//objeto props complejo, objeto anidando objetos
+		props = {texto: "hola", user: {name: "sara", phone: "123456"} }
+
+state		es un objeto similar a props, es privado y esta completamente 
+		controlado por el componente mismo que ha sido creado bajo la 
+		definicion basado en clase
+
+state
+invocaciones
+separadas	con setState puedes actualizar valores por separado. es decir 
+		en momentos diferentes puedes actualizar solo un valor del state 
+		sin la obligacion de actualizar completamente todos los valores
+		del objeto state. ejmp
+
+		this.state = { posts: [], comments: [] };
+		this.setState({ posts: response.posts }); // actualizacion de post en un punto
+		this.setState({ comments: response.comments }); // actualizacion de comments en otro punto
+
+
+state
+descendete o
+unidireccional	un componente hijo puede recibir un valor/funcion proveniente del estado y manejarlo 
+		como un props, basicamente el hijo no sabe si viene del estado del padre, si es
+		un props o simplemente ha sido escrito manualmente, para el hijo simplemente
+		se comporta como parte del objeto props y nada mas.
+
+		ejmp	<FormattedDate date={this.state.date} />
+		ejmp	<LogoutButton onClick={this.handleLogoutClick} />;
+
+
+eventos		los eventos en JSX se escriben con camelCase y la funcion se pasa
+		entre llaves. ejmp  onClick={handleOnClick}
+
+eventos
+ES6		en ES6 los metodos que declares para la clase, estos deben ser ligados
+		en el contructor del componente, esto es para que this no sea undefined
+		a la hora de ser llamado. ejmp  this.hanldeOnClick = this.handleOnClick.bind(this);
+
+
+eventos
+funciones
+flecha		existe tambien la posibilidad de utilizar funciones flecha a manera de evitar ligar
+		los metodos del componente, el problema es que se crea un callback diferente cada vez 
+		que el componente es renderizado, y esto a la larga puede afectar en rendimiento
+
+
+
+eventos
+y argumentos	con bind cualquier argumento adicional es pasado automaticamente
+		ejmp  onClick={this.deleteRow.bind(this, id)}
+
+		con una funcion flecha el argumento "e" que representa el evento sera pasado 
+		como un segundo argumento seguido del argumento a enviar
+		ejmp  {(e) => this.deleteRow(id, e)}
+
+
+
+
+renderizado	en react es posible asignar un elemento a una variable y de esta manera simplificar
+		el codigo a ser renderizado
+		ejmp  let button = <LogoutButton onClick={this.handleLogoutClick} />;
+
+		basicamente la sistaxis de javascript es utilizada para crear bifurcaciones 
+		para decidir entre caminos diferentes
+
+		if (isLoggedIn) {
+      		  button = <LogoutButton onClick={this.handleLogoutClick} />;
+    		} else {
+      		  button = <LoginButton onClick={this.handleLoginClick} />;
+    		}
+
+		null nos permite evitar el renderizado de un elemento, regresando null en lugar 
+		de el elemento, esto crea un vacio y por ende no renderiza absolutamente nada
+
+
+
+listas		cuando se recorre un array para crear listas en JSX es importante asignar un key
+		a cada elemento de la lista, este key ayudara a identificar cada elemento en un futuro,
+		de no obtener el key de tu lista de items, puedes utilizar el indice del array como 
+		ultimo recurso.
+
+		la extraccion de los elementos del array puede ser combinado con sintaxis JSX,	
+		de esta manera se pueden crear elemententos mas complejos o complementar al elemento
+		
+		const listItems = numbers.map((number) =>
+    		<li key={number.toString()}>
+      		  {number}
+   		</li>
+  		);
+
+
+
+formularios	<input>, <textarea>, <select> son componentes controlados, debido a que cada uno de ellos
+		mantiene un estado individual, react debe controlar su estado y hacer que se limiten a 
+		obedecer una unica fuente de estado.
+		toda mutacion del estado de estos componentes tendra asociada una funcion controladora
+		ejmp   
+		handleChange(event) { this.setState({value: event.target.value}); }
+		<input type="text" value={this.state.value} onChange={this.handleChange} />
+		
+		si se opta por utilizar la tecnica de elementos no controlados, en ese caso sera necesario
+		utilizar una referencia al elemento del DOM y poder acceder a el/ellos directamente
+		ejmp
+
+		this.input = React.createRef();
+		this.fileInput = React.createRef();
+
+		<input type="text" ref={this.input} />
+		<input type="file" ref={this.fileInput} />
+	
+		
+levantar el
+estado		se le llama asi a la tecnica de hacer que el padre/ancentro mas cercano
+		maneje y controle el estado compartido entre elementos
+
+
+Funciones flecha
+----------------------------------------------------------------------
+		Con las funciones flecha:
+
+		- accedemos al contexto de afuera (contexto de la clase)
+		  no existe this como contexto adentro de una funcion
+
+
+
+
+
+
+Babel
+----------------------------------------------------------------------
+		compilador js que convierte codigo JSX a JS puro
+		
+browser.min.js	archivo js que compila el codigo del lado del cliente
+		ha sido marcado como obsoleto, puesto que lo ideal es
+		hacer la compilacion previamente del lado del servidor
+		es decir antes de enviarlo al cliente. 
+		Para fines de aprendizaje y sin contar con alguna 
+		herramienta de compilacion, este archivo es de gran ayuda
+
+
+
+
+
